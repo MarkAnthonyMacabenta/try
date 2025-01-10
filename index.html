@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yes or No Buttons</title>
+
+    <style type="text/css"></style> 
+ <link rel="stylesheet" type="text/css" href="yes.css">
+    
+</head>
+<body>
+    <h1> Choose Wise, Angela Mae Marzo. </h1>
+    <button id="yesButton" onclick="handleClick('yes')">YES</button>
+    <button id="noButton" onclick="handleClick('no')">NO</button>
+    <div id="message"></div>
+
+    <script>
+        function handleClick(choice) {
+            const message = document.getElementById('message');
+
+            if (choice === 'yes') {
+                message.textContent = 'smile!';
+            } else if (choice === 'no') {
+                message.textContent = 'smile better!';
+            }
+
+            document.getElementById('yesButton').style.display = 'none';
+            document.getElementById('noButton').style.display = 'none';
+        }
+    </script>
+
+<footer>
+    <p style="margin-top: 50px; font-size: 50px; color: #555;">BE HONEST</p>
+</footer>
+</body>
+</html>
