@@ -1,37 +1,152 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yes or No Buttons</title>
-
-    <style type="text/css"></style> 
- <link rel="stylesheet" type="text/css" href="yes.css">
-    
+    <title>Welcome Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+            overflow: hidden;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+        .hidden {
+            display: none;
+        }
+        #message {
+            margin-top: 20px;
+            font-size: 1.5rem;
+            color: #333;
+        }
+        #sadImage {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 150px;
+            height: auto;
+        }
+        .confetti {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            animation: confettiAnimation 2s forwards;
+            border-radius: 50%;
+            opacity: 0;
+        }
+        @keyframes confettiAnimation {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+                opacity: 1;
+            }
+            50% {
+                transform: translate(var(--x-offset), var(--y-offset)) rotate(180deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--end-x), var(--end-y)) rotate(360deg);
+                opacity: 0;
+            }
+        }
+    </style>
 </head>
 <body>
-    <h1> Choose Wise, Angela Mae Marzo. </h1>
-    <button id="yesButton" onclick="handleClick('yes')">YES</button>
-    <button id="noButton" onclick="handleClick('no')">NO</button>
-    <div id="message"></div>
+    <div id="welcomePage">
+        <h1>Welcome Angela Mae Marzo</h1>
+        <p>Click the button below to proceed.</p>
+        <button onclick="showDecisionPage()">Go to Next Page</button>
+    </div>
+
+    <div id="decisionPage" class="hidden">
+        <h1>Choose an Option</h1>
+        <button id="yesButton" onclick="handleClick('yes')">YES</button>
+        <button id="noButton" onclick="handleClick('no')">NO</button>
+        <div id="message">Make your choice!</div>
+        <footer>
+            <p style="margin-top: 50px; font-size: 0.9rem; color: #555;">BE HONEST</p>
+        </footer>
+    </div>
+
+    <!-- Sad image displayed when "NO" is selected -->
+    <img id="sadImage" src="https://via.placeholder.com/150/ff6347/ffffff?text=Sad" alt="Sad Image">
 
     <script>
-        function handleClick(choice) {
-            const message = document.getElementById('message');
+        function showDecisionPage() {
+            // Reset to hide sad image and message before showing the decision page again.
+            document.getElementById('sadImage').style.display = 'none'; // Hide sad image if visible
+            document.getElementById('message').textContent = "Make your choice!"; // Reset message text
 
-            if (choice === 'yes') {
-                message.textContent = 'smile!';
-            } else if (choice === 'no') {
-                message.textContent = 'smile better!';
+            document.getElementById('welcomePage').classList.add('hidden');
+            document.getElementById('decisionPage').classList.remove('hidden');
+        }
+
+        function createPartyConfetti() {
+            const body = document.body;
+            for (let i = 0; i < 30; i++) {
+                const confetti = document.createElement('div');
+                confetti.classList.add('confetti');
+                const colors = ['#ff0', '#ff6f00', '#ff007f', '#4caf50', '#2196f3', '#9c27b0'];
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+
+                // Position and movement customizations for "party" feel
+                const startX = Math.random() * window.innerWidth;
+                const startY = Math.random() * window.innerHeight;
+                const endX = Math.random() * window.innerWidth;
+                const endY = window.innerHeight;
+
+                confetti.style.left = startX + 'px';
+                confetti.style.top = startY + 'px';
+
+                // Adding CSS variables for confetti movement
+                confetti.style.setProperty('--x-offset', (Math.random() - 0.5) * 300 + 'px');
+                confetti.style.setProperty('--y-offset', (Math.random() - 0.5) * 300 + 'px');
+                confetti.style.setProperty('--end-x', endX + 'px');
+                confetti.style.setProperty('--end-y', endY + 'px');
+
+                body.appendChild(confetti);
+
+                // Remove confetti after 2 seconds
+                setTimeout(() => {
+                    confetti.remove();
+                }, 2000);
+            }
+        }
+
+        function handleClick(answer) {
+            const message = document.getElementById('message');
+            const sadImage = document.getElementById('sadImage');
+
+            // Reset the sad image before displaying a new choice
+            sadImage.style.display = 'none';
+
+            // Show the sad image if the user selects NO
+            if (answer === 'no') {
+                sadImage.style.display = 'block'; // Display the sad image
+                setTimeout(() => {
+                    sadImage.style.display = 'none'; // Hide the sad image after 1 second
+                }, 1000);
             }
 
+            // Create party confetti if YES is selected
+            if (answer === 'yes') {
+                createPartyConfetti(); // Show party confetti for 2 seconds
+            }
+
+            // Hide the buttons after selection
             document.getElementById('yesButton').style.display = 'none';
             document.getElementById('noButton').style.display = 'none';
+
+            // Display text message based on the user's choice
+            if (answer === 'yes') {
+                message.textContent = "You chose YES! Smile 🎉";
+            } else {
+                message.textContent = "Ow no. Smile 😞";
+            }
         }
     </script>
-
-<footer>
-    <p style="margin-top: 50px; font-size: 50px; color: #555;">BE HONEST</p>
-</footer>
 </body>
 </html>
